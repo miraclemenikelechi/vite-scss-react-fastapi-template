@@ -1,10 +1,15 @@
+@use "sass:map";
+@use "sass:color";
+
 // this mixin will generate css variables from scss variables
 // see "mixins.scss/generate-css-vars" for definition
 @mixin generate-css-variables($map: null, $prefix: null) {
     @each $key, $value in $map {
         @if $prefix {
             --#{$prefix}-#{$key}: #{$value};
-        } @else {
+        }
+
+        @else {
             --#{$key}: #{$value};
         }
     }
@@ -14,26 +19,20 @@
 $colors: (
     // colors
     "white--100": #ffffff,
- 
+
     "black--100": #000000,
 
     "hsl--black": (0, 0%, 0%)
 );
-$colors: map-merge(
-    $colors,
-    (
-        "white--200":
-            rgba(
-                $color: map-get($colors, white--100),
-                $alpha: 0.25
-            ),
-        "black--200":
-            rgba(
-                $color: map-get($colors, black--100),
-                $alpha: 15%
-            ),
-    )
-);
+$colors: map.merge($colors,
+        ( //
+            "white--200": color.change(map.get($colors, "white--100"),
+                $alpha: 0.25),
+            // "black--200": rgba($color: map.get($colors, black--100),
+            //     $alpha: 15%),
+            "black--200": color.change(map.get($colors, "black--100"),
+                $alpha: 15%),
+        ));
 
 $ff: (
     // font-family
@@ -75,23 +74,12 @@ $tablet: (
 $mobile: (
     // breakpoints
     "bp": 40rem,
-    "content":
-        map-get(
-            $map: $desktop,
-            $key: content
-        ),
-    "navbar":
-        calc(
-            map-get(
-                    $map: $desktop,
-                    $key: navbar
-                ) * 0.75
-        ),
-    "footer":
-        map-get(
-            $map: $desktop,
-            $key: footer
-        )
+    "content": map.get($map: $desktop,
+        $key: content),
+    "navbar": calc(map.get($map: $desktop,
+            $key: navbar) * 0.75),
+    "footer": map.get($map: $desktop,
+        $key: footer)
 );
 
 $misc: (

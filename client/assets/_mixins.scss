@@ -21,13 +21,15 @@
 // In this example, the element will have a dark-colored outline for debugging purposes.
 
 @mixin debug($mode) {
+
     // Check if the mode is 'light'
-    @if $mode == light {
+    @if $mode ==light {
         // If it is, set the outline to .25rem groove and a random light color
         outline: 0.25rem groove random-light-color();
     }
+
     // Check if the mode is 'dark'
-    @else if $mode == dark {
+    @else if $mode ==dark {
         // If it is, set the outline to .25rem groove and a random dark color
         outline: 0.25rem groove random-dark-color();
     }
@@ -68,7 +70,8 @@
 // }
 
 @mixin flex($type: flex, $d: row, $j: center, $a: center) {
-    display: if($type == inline, inline-flex, flex); // Set display to inline-flex or flex.
+    // display: if($type == inline, inline-flex, flex); // Set display to inline-flex or flex.
+    display: if ($type ==inline:inline-flex, else:flex); // Set display to inline-flex or flex.
     flex-direction: $d; // Set the direction of flex items (row or column).
     justify-content: $j; // Set horizontal alignment of flex items.
     align-items: $a; // Set vertical alignment of flex items.
@@ -92,9 +95,19 @@
 // and a bold weight. If 'primary' is a key in the $ff map, it will use the corresponding value.
 
 @mixin font($f: null, $s: null, $w: null) {
-    $font-family: if($f != null and map-has-key($ff, $f), map-get($ff, $f), $f);
-    $font-size: if($s != null and map-has-key($fz, $s), map-get($fz, $s), $s);
-    $font-weight: if($w != null and map-has-key($fw, $w), map-get($fw, $w), $w);
+    // $font-family: if($f != null and map-has-key($ff, $f), map-get($ff, $f), $f);
+    // $font-size: if($s != null and map-has-key($fz, $s), map-get($fz, $s), $s);
+    // $font-weight: if($w != null and map-has-key($fw, $w), map-get($fw, $w), $w);
+
+    $font-family: if ($f !=null and map-has-key($ff, $f):map-get($ff, $f), else:$f);
+    $font-size: if ($s !=null and map-has-key($fz, $s):map-get($fz, $s), else:$s);
+    $font-weight: if ($w !=null and map-has-key($fw, $w):map-get($fw, $w), else:$w);
+
+
+
+
+
+    // $font-weight: if ($w != null and map-has-key($fz, $s):map-get($fw, $w),else:$w);
 
     font: {
         family: $font-family;
@@ -142,7 +155,9 @@
     @each $key, $value in $map {
         @if $prefix {
             --#{$prefix}-#{$key}: #{$value};
-        } @else {
+        }
+
+        @else {
             --#{$key}: #{$value};
         }
     }
@@ -193,14 +208,16 @@
 // }
 
 @mixin r-bp($type, $bp) {
+
     // Apply styles for minimum breakpoint.
-    @if $type == min {
+    @if $type ==min {
         @media (min-width: $bp) {
             @content; // Insert content here when the condition is met.
         }
     }
+
     // Apply styles for maximum breakpoint.
-    @else if $type == max {
+    @else if $type ==max {
         @media (max-width: $bp) {
             @content; // Insert content here when the condition is met.
         }
@@ -231,12 +248,14 @@
 // whichever is larger.
 
 @mixin r-w($type, $p: 100%, $w) {
+
     // Check if the type is 'min' to set the minimum width.
-    @if $type == min {
+    @if $type ==min {
         width: min($p, $w);
     }
+
     // Check if the type is 'max' to set the maximum width.
-    @else if $type == max {
+    @else if $type ==max {
         width: max($p, $w);
     }
 }
@@ -263,18 +282,20 @@
 // In this example, all direct child elements will have left and right margins of 15px.
 
 @mixin space($type, $size) {
-    & > * {
+    &>* {
+
         // Target all direct child elements.
         // Apply vertical spacing between elements.
-        @if $type == "v" {
+        @if $type =="v" {
             margin-top: $size; // Set top margin.
 
             &:first-child {
                 margin-top: 0; // Remove top margin for the first child.
             }
         }
+
         // Apply horizontal spacing between elements.
-        @else if $type == "h" {
+        @else if $type =="h" {
             margin-left: $size; // Set left margin.
             margin-right: $size; // Set right margin.
         }

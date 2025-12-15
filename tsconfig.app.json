@@ -10,7 +10,7 @@
     /*Path*/
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./client/*"]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",
