@@ -1,0 +1,116 @@
+// this mixin will generate css variables from scss variables
+// see "mixins.scss/generate-css-vars" for definition
+@mixin generate-css-variables($map: null, $prefix: null) {
+    @each $key, $value in $map {
+        @if $prefix {
+            --#{$prefix}-#{$key}: #{$value};
+        } @else {
+            --#{$key}: #{$value};
+        }
+    }
+}
+
+// scss variables
+$colors: (
+    // colors
+    "white--100": #ffffff,
+ 
+    "black--100": #000000,
+
+    "hsl--black": (0, 0%, 0%)
+);
+$colors: map-merge(
+    $colors,
+    (
+        "white--200":
+            rgba(
+                $color: map-get($colors, white--100),
+                $alpha: 0.25
+            ),
+        "black--200":
+            rgba(
+                $color: map-get($colors, black--100),
+                $alpha: 15%
+            ),
+    )
+);
+
+$ff: (
+    // font-family
+    // "roboto": ("Roboto Slab", serif)
+);
+
+$fw: (
+    // font-weight
+    "thin": 100,
+    "light": 300,
+    "regular": 400,
+    "medium": 500,
+    "semibold": 600,
+    "bold": 700,
+    "extrabold": 800,
+    "black": 900
+);
+
+$fz: (
+    // font-size
+    base: 1rem
+);
+
+$desktop: (
+    // breakpoints
+    "content": 80rem,
+    "navbar": 6rem,
+    "footer": 18rem
+);
+
+$tablet: (
+    // breakpoints
+    "bp": 64rem,
+    "content": "",
+    "navbar": "",
+    "footer": ""
+);
+
+$mobile: (
+    // breakpoints
+    "bp": 40rem,
+    "content":
+        map-get(
+            $map: $desktop,
+            $key: content
+        ),
+    "navbar":
+        calc(
+            map-get(
+                    $map: $desktop,
+                    $key: navbar
+                ) * 0.75
+        ),
+    "footer":
+        map-get(
+            $map: $desktop,
+            $key: footer
+        )
+);
+
+$misc: (
+    // miscellaneous
+    "spacing": 1rem,
+    "transition": 250ms
+);
+
+// css variables
+:root {
+    @include generate-css-variables($map: $misc);
+
+    @include generate-css-variables($map: $colors);
+
+    @include generate-css-variables($map: $ff, $prefix: "ff");
+    @include generate-css-variables($map: $fw, $prefix: "fw");
+    @include generate-css-variables($map: $fz, $prefix: "fz");
+
+    @include generate-css-variables($map: $desktop, $prefix: "desktop");
+    @include generate-css-variables($map: $mobile, $prefix: "mobile");
+    @include generate-css-variables($map: $tablet, $prefix: "tablet");
+}
