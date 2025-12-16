@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "bunx --bun tsc -b && bunx --bun vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:client": "bunx --bun vite",
+    "start:server": "cross-env PYTHONIOENCODING=utf-8 uv run fastapi dev main.py",
+    "start": "concurrently -k -n CLIENT,SERVER -c blue,green \"bun run dev:client\" \"bun run start:server\""
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
@@ -26,6 +29,8 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
     "babel-plugin-react-compiler": "^19.1.0-rc.3",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "eslint": "^9.39.2",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.25",
